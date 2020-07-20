@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Page Title</title>
+    <title>Isaacs JavaScript Calender</title>
     <link rel="stylesheet" type="text/css" href="style.css" />
     <script>
       var date = new Date();
@@ -11,33 +11,24 @@
       var lastDayOfTheMonth = new Date(y, m + 1, 0);
       var offset = firstDayOfTheMonth.getDay();
       var dayOnTheGrid = offset + date.getDate();
-      ////
 
-      // localStorage.month = JSON.stringify(m);
-      // let saved = JSON.parse(localStorage.month);
+      ////
 
       function monthIncrement() {
         m++;
-        var firstDayOfTheMonth = new Date(y, m, 1);
-        var lastDayOfTheMonth = new Date(y, m + 1, 0);
-        var offset = firstDayOfTheMonth.getDay();
-        var dayOnTheGrid = offset + date.getDate();
-        // --
-        var adjustableDate = new Date(2020, m);
-        var month = adjustableDate.toLocaleString("default", { month: "long" });
-        document.getElementById("month").innerHTML = month;
-        calenderPopulator(
-          m,
-          dayOnTheGrid,
-          firstDayOfTheMonth,
-          lastDayOfTheMonth
-        );
+        dateIntegerExtractor(m);
       }
 
       ////
 
       function monthDecrement() {
         m--;
+        dateIntegerExtractor(m);
+      }
+
+      ////
+
+      function dateIntegerExtractor(m) {
         var firstDayOfTheMonth = new Date(y, m, 1);
         var lastDayOfTheMonth = new Date(y, m + 1, 0);
         var offset = firstDayOfTheMonth.getDay();
@@ -55,7 +46,10 @@
 
       ////
 
-      function doit() {
+      function initialPageLoad() {
+        var date = new Date();
+        m = date.getMonth();
+        dateIntegerExtractor();
         var weekDays = new Array(
           "Sunday",
           "Monday",
@@ -83,7 +77,7 @@
         );
       }
 
-      ////////
+      ////
 
       function calenderPopulator(
         m,
@@ -91,13 +85,15 @@
         firstDayOfTheMonth,
         lastDayOfTheMonth
       ) {
+        var date = new Date();
+        currentMonth = date.getMonth();
         var ids = new Array();
         for (var i = 1; i <= 35; i++) {
           ids.push(i);
         }
         document.getElementById("griddies").innerHTML = ids
           .map((id) =>
-            id == dayOnTheGrid && m == month
+            id == dayOnTheGrid && m == currentMonth
               ? `<div class="my-date" id=${id - 3 < 1 ? (id = null) : id - 3}>${
                   id - 3 < 1 || id - 3 > lastDayOfTheMonth.getDate()
                     ? (id = null)
@@ -113,10 +109,17 @@
           )
           .join("");
       }
+
+      ////
+
+      window.onclick = (e) => {
+        console.log(e.target);
+        console.log(e.target.id, " -->", e.target.innerHTML);
+      };
     </script>
   </head>
-  <!-- **** -->
-  <body onload="doit()">
+  <!-- ************************* -->
+  <body onload="initialPageLoad()">
     <div class="header" id="month"></div>
     <div class="grid-container" id="ans"></div>
     <div class="grid-container" id="griddies"></div>

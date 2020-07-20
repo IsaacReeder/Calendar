@@ -1,0 +1,46 @@
+.body {
+  max-height: 80%;
+}
+
+.grid-container {
+  display: grid;
+  grid-template-columns: auto auto auto auto auto auto auto;
+  background-color: #2196f3;
+  padding: 10px;
+  max-height: 100%;
+  border-radius: 1%;
+}
+
+.grid-item {
+  background-color: rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(0, 0, 0, 0.8);
+  padding: 20px;
+  font-size: 30px;
+  text-align: center;
+  border-radius: 5%;
+}
+
+.my-date {
+  background-color: rgba(255, 251, 16, 0.966);
+  border: 1px solid rgba(0, 0, 0, 0.8);
+  padding: 20px;
+  font-size: 30px;
+  text-align: center;
+  border-radius: 5%;
+}
+
+.stuff {
+  padding: 20px;
+}
+
+.grid-item:hover {
+  background-color: greenyellow;
+}
+
+.header {
+  text-align: center;
+  font-size: 30px;
+  min-height: 2rem;
+  min-width: 100%;
+  background-color: #9cb6cc;
+}

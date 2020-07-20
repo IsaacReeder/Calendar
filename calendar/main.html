@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Page Title</title>
+    <link rel="stylesheet" type="text/css" href="style.css" />
+    <script>
+      var today = new Date();
+      var date = new Date(),
+        y = date.getFullYear(),
+        m = date.getMonth();
+
+      var firstDay = new Date(y, m, 1);
+      var lastDay = new Date(y, m + 1, 0);
+      var day = firstDay.getDay();
+
+      ////
+
+      var dayOnTheGrid = day + today.getDate();
+      console.log(dayOnTheGrid);
+
+      ////
+
+      var math = day - 1 + today.getDate();
+
+      function doit() {
+        var ids = new Array();
+        for (var i = 1; i <= 42; i++) {
+          ids.push(i);
+        }
+        document.getElementById("griddies").innerHTML = ids
+          .map((id) =>
+            id == dayOnTheGrid
+              ? `<div class="my-date" id=${id}>${id}</div>`
+              : `<div class="grid-item" id=${id}>${id}</div>`
+          )
+          .join("");
+        const month = date.toLocaleString("default", { month: "long" });
+        console.log(month);
+        document.getElementById("month").innerHTML = month;
+      }
+    </script>
+  </head>
+  <!-- **** -->
+  <body onload="doit()">
+    <div class="header" id="month"></div>
+    <div class="grid-container" id="griddies"></div>
+  </body>
+</html>

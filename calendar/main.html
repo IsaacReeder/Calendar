@@ -20,6 +20,24 @@
       ////
 
       function doit() {
+        var weekDays = new Array(
+          "Sunday",
+          "Monday",
+          "Tuesday",
+          "Wednesday",
+          "Thursday",
+          "Friday",
+          "Saturday"
+        );
+        for (i = 0; i <= 6; i++) {
+          document.getElementById("ans").innerHTML = weekDays
+            .map(
+              (weekDay) =>
+                `<div class="week-day-container" id=${weekDay}>${weekDay}</div>`
+            )
+            .join("");
+        }
+        ////////
         var ids = new Array();
         for (var i = 1; i <= 35; i++) {
           ids.push(i);
@@ -48,6 +66,9 @@
   <!-- **** -->
   <body onload="doit()">
     <div class="header" id="month"></div>
+    <div class="grid-container" id="ans"></div>
     <div class="grid-container" id="griddies"></div>
+    <a href="#" class="previous round">&#8249;</a>
+    <a href="#" class="next round">&#8250;</a>
   </body>
 </html>

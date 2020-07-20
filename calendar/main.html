@@ -4,18 +4,54 @@
     <title>Page Title</title>
     <link rel="stylesheet" type="text/css" href="style.css" />
     <script>
-      // var today = new Date();
-      var date = new Date(),
-        y = date.getFullYear(),
-        m = date.getMonth();
+      var date = new Date();
+      y = date.getFullYear();
+      m = date.getMonth();
+      var firstDayOfTheMonth = new Date(y, m, 1);
+      var lastDayOfTheMonth = new Date(y, m + 1, 0);
+      var offset = firstDayOfTheMonth.getDay();
+      var dayOnTheGrid = offset + date.getDate();
+      ////
 
-      var firstDay = new Date(y, m, 1);
-      var lastDay = new Date(y, m + 1, 0);
-      var day = firstDay.getDay();
+      // localStorage.month = JSON.stringify(m);
+      // let saved = JSON.parse(localStorage.month);
+
+      function monthIncrement() {
+        m++;
+        var firstDayOfTheMonth = new Date(y, m, 1);
+        var lastDayOfTheMonth = new Date(y, m + 1, 0);
+        var offset = firstDayOfTheMonth.getDay();
+        var dayOnTheGrid = offset + date.getDate();
+        // --
+        var adjustableDate = new Date(2020, m);
+        var month = adjustableDate.toLocaleString("default", { month: "long" });
+        document.getElementById("month").innerHTML = month;
+        calenderPopulator(
+          m,
+          dayOnTheGrid,
+          firstDayOfTheMonth,
+          lastDayOfTheMonth
+        );
+      }
 
       ////
 
-      var dayOnTheGrid = day + date.getDate();
+      function monthDecrement() {
+        m--;
+        var firstDayOfTheMonth = new Date(y, m, 1);
+        var lastDayOfTheMonth = new Date(y, m + 1, 0);
+        var offset = firstDayOfTheMonth.getDay();
+        var dayOnTheGrid = offset + date.getDate();
+        var adjustableDate = new Date(2020, m);
+        var month = adjustableDate.toLocaleString("default", { month: "long" });
+        document.getElementById("month").innerHTML = month;
+        calenderPopulator(
+          m,
+          dayOnTheGrid,
+          firstDayOfTheMonth,
+          lastDayOfTheMonth
+        );
+      }
 
       ////
 
@@ -37,29 +73,45 @@
             )
             .join("");
         }
-        ////////
+        var month = date.toLocaleString("default", { month: "long" });
+        document.getElementById("month").innerHTML = month;
+        calenderPopulator(
+          m,
+          dayOnTheGrid,
+          firstDayOfTheMonth,
+          lastDayOfTheMonth
+        );
+      }
+
+      ////////
+
+      function calenderPopulator(
+        m,
+        dayOnTheGrid,
+        firstDayOfTheMonth,
+        lastDayOfTheMonth
+      ) {
         var ids = new Array();
         for (var i = 1; i <= 35; i++) {
           ids.push(i);
         }
         document.getElementById("griddies").innerHTML = ids
           .map((id) =>
-            id == dayOnTheGrid
+            id == dayOnTheGrid && m == month
               ? `<div class="my-date" id=${id - 3 < 1 ? (id = null) : id - 3}>${
-                  id - 3 < 1 || id - 3 > lastDay.getDate()
+                  id - 3 < 1 || id - 3 > lastDayOfTheMonth.getDate()
                     ? (id = null)
                     : id - 3
                 }</div>`
               : `<div class="grid-item" id=${
                   id - 3 < 1 ? (id = null) : id - 3
                 }>${
-                  id - 3 < 1 || id - 3 > lastDay.getDate() ? (id = "") : id - 3
+                  id - 3 < 1 || id - 3 > lastDayOfTheMonth.getDate()
+                    ? (id = "")
+                    : id - 3
                 }</div>`
           )
           .join("");
-        const month = date.toLocaleString("default", { month: "long" });
-        console.log(month);
-        document.getElementById("month").innerHTML = month;
       }
     </script>
   </head>
@@ -68,7 +120,7 @@
     <div class="header" id="month"></div>
     <div class="grid-container" id="ans"></div>
     <div class="grid-container" id="griddies"></div>
-    <a href="#" class="previous round">&#8249;</a>
-    <a href="#" class="next round">&#8250;</a>
+    <a href="#" class="previous round" onclick="monthDecrement()">&#8249;</a>
+    <a href="#" class="next round" onclick="monthIncrement()">&#8250;</a>
   </body>
 </html>

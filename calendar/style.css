@@ -20,7 +20,7 @@
   border-radius: 5%;
 }
 
-.selected-grid-item {
+.selected-square {
   background-color: rgba(43, 170, 75, 0.8);
   border: 1px solid rgba(0, 0, 0, 0.8);
   padding: 20px;

@@ -113,6 +113,11 @@
       ////
 
       window.onclick = (e) => {
+        if (e.target.classList.contains("grid-item")) {
+          document;
+          e.target.classList.toggle("selected-square");
+        }
+
         console.log(e.target);
         console.log(e.target.id, " -->", e.target.innerHTML);
       };

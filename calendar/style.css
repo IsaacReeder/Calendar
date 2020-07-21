@@ -19,6 +19,7 @@
 .grid-item {
   background-color: #9fd8cb;
   border: 1px solid #517664;
+  box-shadow: inset 0px 0px 10px rgba(0, 0, 0, 0.5);
   padding: 20px;
   font-size: 30px;
   text-align: center;
@@ -71,6 +72,7 @@
   background-color: #cacfd6;
   margin-left: 10%;
   margin-right: 10%;
+  box-shadow: inset 0px 0px 10px rgba(0, 0, 0, 0.5);
 }
 
 a {
@@ -93,12 +95,14 @@ a:hover {
   float: left;
   z-index: 1000;
   position: relative;
+  box-shadow: inset 0px 0px 10px rgba(252, 251, 251, 0.507);
 }
 
 .next {
   background-color: #212512;
   color: #d6e5e3;
-  float: right
+  float: right;
+  box-shadow: inset 0px 0px 10px rgba(252, 251, 251, 0.507);
 }
 
 .round {

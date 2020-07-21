@@ -121,6 +121,25 @@
         console.log(e.target);
         console.log(e.target.id, " -->", e.target.innerHTML);
       };
+
+      ////
+
+      document.onkeydown = function (e) {
+        switch (e.keyCode) {
+          case 37:
+            str = "Left Key pressed!";
+            monthDecrement();
+            break;
+          case 38:
+            break;
+          case 39:
+            str = "Right Key pressed!";
+            monthIncrement();
+            break;
+          case 40:
+            break;
+        }
+      };
     </script>
   </head>
   <!-- ************************* -->

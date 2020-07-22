@@ -15,36 +15,79 @@
       ////
 
       function monthIncrement() {
-        m++;
-        dateIntegerExtractor(m);
+        var monthsSinceChristBirth =
+          localStorage.getItem("monthsSinceChristBirth") || 0;
+        monthsSinceChristBirth++;
+        localStorage.setItem("monthsSinceChristBirth", monthsSinceChristBirth);
+        dateIntegerExtractor();
+        // m++;
+        // dateIntegerExtractor(m);
       }
 
       ////
 
       function monthDecrement() {
-        m--;
-        dateIntegerExtractor(m);
+        var monthsSinceChristBirth =
+          localStorage.getItem("monthsSinceChristBirth") || 0;
+        monthsSinceChristBirth--;
+        localStorage.setItem("monthsSinceChristBirth", monthsSinceChristBirth);
+        dateIntegerExtractor();
+        // m--;
+        // dateIntegerExtractor(m);
       }
 
       ////
 
-      function dateIntegerExtractor(m) {
-        var firstDayOfTheMonth = new Date(y, m, 1);
-        var lastDayOfTheMonth = new Date(y, m + 1, 0);
-        var offset = firstDayOfTheMonth.getDay();
-        var dayOnTheGrid = offset + date.getDate();
-        var adjustableDate = new Date(2020, m);
-        var month = adjustableDate.toLocaleString("default", { month: "long" });
-        document.getElementById("month").innerHTML = month;
-        calenderPopulator(
-          m,
-          dayOnTheGrid,
-          firstDayOfTheMonth,
-          lastDayOfTheMonth
+      function dateIntegerExtractor() {
+        var monthsSinceChristBirth = localStorage.getItem(
+          "monthsSinceChristBirth",
+          monthsSinceChristBirth
         );
+        console.log(monthsSinceChristBirth);
+        var currentYearNoMatterWhichOne = Math.floor(
+          monthsSinceChristBirth / 12
+        );
+        console.log(currentYearNoMatterWhichOne);
+        var monthWereIn = (monthsSinceChristBirth % 12) + 1;
+        console.log(monthWereIn);
+
+        var firstDayOfTheMonth = new Date(
+          currentYearNoMatterWhichOne,
+          monthWereIn - 1,
+          1
+        );
+        var lastDayOfTheMonth = new Date(
+          currentYearNoMatterWhichOne,
+          monthWereIn - 1,
+          0
+        );
+        console.log(lastDayOfTheMonth);
+        var newOffset = firstDayOfTheMonth.getDay();
+        localStorage.setItem("newOffset", newOffset);
+        console.log(firstDayOfTheMonth);
+        console.log(newOffset);
+        var dayOnTheGrid = newOffset + date.getDate();
+        var months = [
+          "January",
+          "February",
+          "March",
+          "April",
+          "May",
+          "June",
+          "July",
+          "August",
+          "September",
+          "October",
+          "November",
+          "December",
+        ];
+
+        var selectedMonthName = months[monthWereIn - 1];
+        localStorage.setItem("selectedMonthName", selectedMonthName);
+        console.log(selectedMonthName);
       }
 
-      ////
+      /////       VIM note: :1,3s/^/#       /////
 
       function initialPageLoad() {
         var date = new Date();
@@ -52,42 +95,12 @@
         y = date.getFullYear();
 
         var monthsSinceChristBirth = y * 12 + 6;
-        console.log(monthsSinceChristBirth);
-        var currentYearNoMatterWhichOne = Math.floor(
-          monthsSinceChristBirth / 12
-        );
-        console.log(currentYearNoMatterWhichOne);
-        var monthWereIn = monthsSinceChristBirth % 12;
-        console.log(monthWereIn);
-
-        var firstDayOfTheMonth = new Date(
-          currentYearNoMatterWhichOne,
-          monthWereIn,
-          1
-        );
-        var lastDayOfTheMonth = new Date(
-          currentYearNoMatterWhichOne,
-          monthWereIn + 1,
-          0
-        );
-        console.log(lastDayOfTheMonth);
-        var offset = firstDayOfTheMonth.getDay();
-        console.log(firstDayOfTheMonth);
-        console.log(offset);
-        var dayOnTheGrid = offset + date.getDate();
+        localStorage.setItem("monthsSinceChristBirth", monthsSinceChristBirth);
         // y * 12 + month -1 = stuff    // -1 because months are 0-11
         // take the month * 0, mod 12 and then add 1 to the remainder to get the month number
-        // offset = christnumber;
+
         dateIntegerExtractor();
-        var weekDays = new Array(
-          "Sunday",
-          "Monday",
-          "Tuesday",
-          "Wednesday",
-          "Thursday",
-          "Friday",
-          "Saturday"
-        );
+        var weekDays = new Array("S", "M", "T", "W", "T", "F", "S");
         for (i = 0; i <= 6; i++) {
           document.getElementById("ans").innerHTML = weekDays
             .map(
@@ -96,8 +109,11 @@
             )
             .join("");
         }
-        var month = date.toLocaleString("default", { month: "long" });
-        document.getElementById("month").innerHTML = month;
+        // var month = date.toLocaleString("default", { month: "long" });
+        var selectedMonthName = localStorage.getItem("selectedMonthName");
+        document.getElementById(
+          "selectedMonthName"
+        ).innerHTML = selectedMonthName;
         calenderPopulator(
           m,
           dayOnTheGrid,
@@ -114,7 +130,8 @@
         firstDayOfTheMonth,
         lastDayOfTheMonth
       ) {
-        var fixedTempOffset = 6;
+        var newOffset = localStorage.getItem("newOffset");
+        dateIntegerExtractor();
         var date = new Date();
         currentMonth = date.getMonth();
         var ids = new Array();
@@ -125,20 +142,20 @@
           .map((id) =>
             id == dayOnTheGrid && m == currentMonth
               ? `<div class="my-date" id=${
-                  id - fixedTempOffset < 1 ? (id = null) : id - fixedTempOffset
+                  id - newOffset < 1 ? (id = null) : id - newOffset
                 }>${
-                  id - fixedTempOffset < 1 ||
-                  id - fixedTempOffset > lastDayOfTheMonth.getDate()
+                  id - newOffset < 1 ||
+                  id - newOffset > lastDayOfTheMonth.getDate()
                     ? (id = null)
-                    : id - fixedTempOffset
+                    : id - newOffset
                 }</div>`
               : `<div class="grid-item" id=${
-                  id - fixedTempOffset < 1 ? (id = null) : id - fixedTempOffset
+                  id - newOffset < 1 ? (id = null) : id - newOffset
                 }>${
-                  id - fixedTempOffset < 1 ||
-                  id - fixedTempOffset > lastDayOfTheMonth.getDate()
+                  id - newOffset < 1 ||
+                  id - newOffset > lastDayOfTheMonth.getDate()
                     ? (id = "")
-                    : id - fixedTempOffset
+                    : id - newOffset
                 }</div>`
           )
           .join("");
@@ -174,7 +191,7 @@
   </head>
   <!-- ************************* -->
   <body onload="initialPageLoad()">
-    <div class="header" id="month"></div>
+    <div class="header" id="selectedMonthName"></div>
     <div class="grid-container" id="ans"></div>
     <div class="grid-container" id="griddies"></div>
     <a href="#" class="previous round" onclick="monthDecrement()">&#8249;</a>

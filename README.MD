@@ -1,1 +1,1 @@
-A simple calender app, written in pure JavaScript
+A simple calendar app, written in pure JavaScript

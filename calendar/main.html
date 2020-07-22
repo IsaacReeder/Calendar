@@ -49,6 +49,35 @@
       function initialPageLoad() {
         var date = new Date();
         m = date.getMonth();
+        y = date.getFullYear();
+
+        var monthsSinceChristBirth = y * 12 + 6;
+        console.log(monthsSinceChristBirth);
+        var currentYearNoMatterWhichOne = Math.floor(
+          monthsSinceChristBirth / 12
+        );
+        console.log(currentYearNoMatterWhichOne);
+        var monthWereIn = monthsSinceChristBirth % 12;
+        console.log(monthWereIn);
+
+        var firstDayOfTheMonth = new Date(
+          currentYearNoMatterWhichOne,
+          monthWereIn,
+          1
+        );
+        var lastDayOfTheMonth = new Date(
+          currentYearNoMatterWhichOne,
+          monthWereIn + 1,
+          0
+        );
+        console.log(lastDayOfTheMonth);
+        var offset = firstDayOfTheMonth.getDay();
+        console.log(firstDayOfTheMonth);
+        console.log(offset);
+        var dayOnTheGrid = offset + date.getDate();
+        // y * 12 + month -1 = stuff    // -1 because months are 0-11
+        // take the month * 0, mod 12 and then add 1 to the remainder to get the month number
+        // offset = christnumber;
         dateIntegerExtractor();
         var weekDays = new Array(
           "Sunday",
@@ -85,6 +114,7 @@
         firstDayOfTheMonth,
         lastDayOfTheMonth
       ) {
+        var fixedTempOffset = 6;
         var date = new Date();
         currentMonth = date.getMonth();
         var ids = new Array();
@@ -94,17 +124,21 @@
         document.getElementById("griddies").innerHTML = ids
           .map((id) =>
             id == dayOnTheGrid && m == currentMonth
-              ? `<div class="my-date" id=${id - 3 < 1 ? (id = null) : id - 3}>${
-                  id - 3 < 1 || id - 3 > lastDayOfTheMonth.getDate()
+              ? `<div class="my-date" id=${
+                  id - fixedTempOffset < 1 ? (id = null) : id - fixedTempOffset
+                }>${
+                  id - fixedTempOffset < 1 ||
+                  id - fixedTempOffset > lastDayOfTheMonth.getDate()
                     ? (id = null)
-                    : id - 3
+                    : id - fixedTempOffset
                 }</div>`
               : `<div class="grid-item" id=${
-                  id - 3 < 1 ? (id = null) : id - 3
+                  id - fixedTempOffset < 1 ? (id = null) : id - fixedTempOffset
                 }>${
-                  id - 3 < 1 || id - 3 > lastDayOfTheMonth.getDate()
+                  id - fixedTempOffset < 1 ||
+                  id - fixedTempOffset > lastDayOfTheMonth.getDate()
                     ? (id = "")
-                    : id - 3
+                    : id - fixedTempOffset
                 }</div>`
           )
           .join("");
@@ -130,13 +164,9 @@
             str = "Left Key pressed!";
             monthDecrement();
             break;
-          case 38:
-            break;
           case 39:
             str = "Right Key pressed!";
             monthIncrement();
-            break;
-          case 40:
             break;
         }
       };
@@ -178,13 +208,14 @@
   </script>
 </html>
 
-<!--         ,----------------,              ,---------,
+<!--     
+             ,----------------,              ,---------,
         ,-----------------------,          ,"        ,"|
       ,"                      ,"|        ,"        ,"  |
      +-----------------------+  |      ,"        ,"    |
      |  .-----------------.  |  |     +---------+      |
      |  |                 |  |  |     | -==----'|      |
-     |  |  Tabapay.com    |  |  |     |         |      |
+     |  |                 |  |  |     |         |      |
      |  |                 |  |  |/----|`---=    |      |
      |  |  C:\>_          |  |  |   ,/|==== ooo |      ;
      |  |                 |  |  |  // |(((( [33]|    ,"

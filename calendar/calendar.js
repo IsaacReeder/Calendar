@@ -1,31 +1,19 @@
 function initialPageLoad() {
   console.log("initialPageLoad() has been called");
-  var todaysDate = new Date();
-  localStorage.setItem("todaysDate", todaysDate);
-  m = todaysDate.getMonth();
-  y = todaysDate.getFullYear();
-
-  var monthsSinceChristBirth = y * 12 + 6;
-  localStorage.setItem("monthsSinceChristBirth", monthsSinceChristBirth);
-
-  var weekDays = new Array("S", "M", "T", "W", "T", "F", "S");
-  for (i = 0; i <= 6; i++) {
-    document.getElementById("ans").innerHTML = weekDays
-      .map(
-        (weekDay) =>
-          `<div class="week-day-container" id=${weekDay}>${weekDay}</div>`
-      )
-      .join("");
-  }
-
-  var selectedMonthName = localStorage.getItem("selectedMonthName");
-  var currentYearNoMatterWhichOne = localStorage.getItem(
-    "currentYearNoMatterWhichOne"
-  );
-  document.getElementById(
-    "selectedMonthName"
-  ).innerHTML = `<div class="header-dates">${selectedMonthName}, ${currentYearNoMatterWhichOne}</div>`;
+  dateExtractor();
+  dayDisplay();
   calenderPopulator();
+  zeroYearCreator();
+  headerPopulator();
+}
+
+////
+
+function dateExtractor() {
+  console.log("dateExtractor() has been called");
+  currentMonthAndYear();
+  headerMonthCreator();
+  firstLastOffset();
 }
 
 ////
@@ -74,69 +62,11 @@ function calenderPopulator() {
 
 ////
 
-function dateExtractor() {
-  console.log("dateExtractor() has been called");
-  var monthsSinceChristBirth = localStorage.getItem(
-    "monthsSinceChristBirth",
-    monthsSinceChristBirth
-  );
-  var currentYearNoMatterWhichOne = Math.floor(monthsSinceChristBirth / 12);
-  var monthWereIn = (monthsSinceChristBirth % 12) + 1;
-  localStorage.setItem("monthWereIn", monthWereIn);
-
-  var firstDayOfTheMonth = new Date(
-    currentYearNoMatterWhichOne,
-    monthWereIn - 1,
-    1
-  ).getDate();
-  var lastDayOfTheMonth = new Date(
-    currentYearNoMatterWhichOne,
-    monthWereIn - 1,
-    0
-  ).getDate();
-  localStorage.setItem("firstDayOfTheMonth", firstDayOfTheMonth);
-  localStorage.setItem("lastDayOfTheMonth", lastDayOfTheMonth);
-
-  var newOffset = new Date(
-    currentYearNoMatterWhichOne,
-    monthWereIn - 1,
-    1
-  ).getDay();
-
-  localStorage.setItem("newOffset", newOffset);
-  var todaysDate = localStorage.getItem("todaysDate");
-  var dayOnTheGrid = newOffset + todaysDate;
-  localStorage.setItem("dayOnTheGrid", dayOnTheGrid);
-  var months = [
-    "January",
-    "February",
-    "March",
-    "April",
-    "May",
-    "June",
-    "July",
-    "August",
-    "September",
-    "October",
-    "November",
-    "December",
-  ];
-
-  var selectedMonthName = months[monthWereIn - 1];
-  localStorage.setItem("monthWereIn", monthWereIn);
-  document.getElementById(
-    "selectedMonthName"
-  ).innerHTML = `<div class="header-dates">${selectedMonthName}, ${currentYearNoMatterWhichOne}</div>`;
-}
-
-////
-
 function monthIncrement() {
   console.log("monthIncrement() has been called");
-  var monthsSinceChristBirth =
-    localStorage.getItem("monthsSinceChristBirth") || 0;
-  monthsSinceChristBirth++;
-  localStorage.setItem("monthsSinceChristBirth", monthsSinceChristBirth);
+  var monthsSinceYearZero = localStorage.getItem("monthsSinceYearZero") || 0;
+  monthsSinceYearZero++;
+  localStorage.setItem("monthsSinceYearZero", monthsSinceYearZero);
   dateExtractor();
   calenderPopulator();
 }
@@ -145,10 +75,9 @@ function monthIncrement() {
 
 function monthDecrement() {
   console.log("monthDecrement() has been called");
-  var monthsSinceChristBirth =
-    localStorage.getItem("monthsSinceChristBirth") || 0;
-  monthsSinceChristBirth--;
-  localStorage.setItem("monthsSinceChristBirth", monthsSinceChristBirth);
+  var monthsSinceYearZero = localStorage.getItem("monthsSinceYearZero") || 0;
+  monthsSinceYearZero--;
+  localStorage.setItem("monthsSinceYearZero", monthsSinceYearZero);
   dateExtractor();
   calenderPopulator();
 }
@@ -177,3 +106,120 @@ document.onkeydown = function (e) {
       break;
   }
 };
+
+////
+
+function dayDisplay() {
+  var weekDays = new Array("S", "M", "T", "W", "T", "F", "S");
+  for (i = 0; i <= 6; i++) {
+    document.getElementById("ans").innerHTML = weekDays
+      .map(
+        (weekDay) =>
+          `<div class="week-day-container" id=${weekDay}>${weekDay}</div>`
+      )
+      .join("");
+  }
+}
+
+////
+
+function zeroYearCreator() {
+  var todaysDate = new Date();
+  localStorage.setItem("todaysDate", todaysDate);
+  y = todaysDate.getFullYear();
+  var monthsSinceYearZero = y * 12 + 6;
+  // Johannes Kepler's Rudolphine Tables (1627)
+  localStorage.setItem("monthsSinceYearZero", monthsSinceYearZero);
+}
+
+////
+
+function headerPopulator() {
+  var selectedMonthName = localStorage.getItem("selectedMonthName");
+  var currentYearNoMatterWhichOne = localStorage.getItem(
+    "currentYearNoMatterWhichOne"
+  );
+  document.getElementById(
+    "selectedMonthName"
+  ).innerHTML = `<div class="header-dates">${selectedMonthName}, ${currentYearNoMatterWhichOne}</div>`;
+}
+
+////
+
+function currentMonthAndYear() {
+  var monthsSinceYearZero = localStorage.getItem("monthsSinceYearZero");
+  var currentYearNoMatterWhichOne = Math.floor(monthsSinceYearZero / 12);
+  var monthWereIn = (monthsSinceYearZero % 12) + 1;
+  localStorage.setItem("monthWereIn", monthWereIn);
+  localStorage.setItem(
+    "currentYearNoMatterWhichOne",
+    currentYearNoMatterWhichOne
+  );
+}
+
+////
+
+function headerMonthCreator() {
+  var todaysDate = localStorage.getItem("todaysDate");
+  var newOffset = localStorage.setItem("newOffset", newOffset);
+  var monthWereIn = localStorage.getItem("monthWereIn");
+  var currentYearNoMatterWhichOne = localStorage.getItem(
+    "currentYearNoMatterWhichOne"
+  );
+
+  var dayOnTheGrid = newOffset + todaysDate;
+  localStorage.setItem("dayOnTheGrid", dayOnTheGrid);
+  var months = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ];
+
+  var selectedMonthName = months[monthWereIn - 1];
+  console.log(selectedMonthName);
+  localStorage.setItem("monthWereIn", monthWereIn);
+  document.getElementById(
+    "selectedMonthName"
+  ).innerHTML = `<div class="header-dates">${selectedMonthName}, ${currentYearNoMatterWhichOne}</div>`;
+}
+
+////
+
+function firstLastOffset() {
+  var currentYearNoMatterWhichOne = localStorage.getItem(
+    "currentYearNoMatterWhichOne"
+  );
+  var monthWereIn = localStorage.getItem("monthWereIn");
+  var monthsSinceYearZero = localStorage.getItem("monthsSinceYearZero");
+
+  var firstDayOfTheMonth = new Date(
+    currentYearNoMatterWhichOne,
+    monthWereIn - 1,
+    1
+  ).getDate();
+  localStorage.setItem("firstDayOfTheMonth", firstDayOfTheMonth);
+
+  var lastDayOfTheMonth = new Date(
+    Math.floor(monthsSinceYearZero / 12),
+    (monthsSinceYearZero % 12) + 1,
+    0
+  ).getDate();
+  console.log(lastDayOfTheMonth);
+  localStorage.setItem("lastDayOfTheMonth", lastDayOfTheMonth);
+
+  var newOffset = new Date(
+    currentYearNoMatterWhichOne,
+    monthWereIn - 1,
+    1
+  ).getDay();
+  localStorage.setItem("newOffset", newOffset);
+}

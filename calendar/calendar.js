@@ -1,21 +1,10 @@
-// var date = new Date();
-// y = date.getFullYear();
-// m = date.getMonth();
-// var firstDayOfTheMonth = new Date(y, m, 1);
-// var lastDayOfTheMonth = new Date(y, m + 1, 0);
-// var offset = firstDayOfTheMonth.getDay();
-// var dayOnTheGrid = offset + date.getDate();
-
-////
-
 function monthIncrement() {
   var monthsSinceChristBirth =
     localStorage.getItem("monthsSinceChristBirth") || 0;
   monthsSinceChristBirth++;
   localStorage.setItem("monthsSinceChristBirth", monthsSinceChristBirth);
   dateIntegerExtractor();
-  // m++;
-  // dateIntegerExtractor(m);
+  calenderPopulator();
 }
 
 ////
@@ -26,8 +15,7 @@ function monthDecrement() {
   monthsSinceChristBirth--;
   localStorage.setItem("monthsSinceChristBirth", monthsSinceChristBirth);
   dateIntegerExtractor();
-  // m--;
-  // dateIntegerExtractor(m);
+  calenderPopulator();
 }
 
 ////
@@ -48,18 +36,24 @@ function dateIntegerExtractor() {
     currentYearNoMatterWhichOne,
     monthWereIn - 1,
     1
-  );
+  ).getDate();
   var lastDayOfTheMonth = new Date(
     currentYearNoMatterWhichOne,
     monthWereIn - 1,
     0
-  );
+  ).getDate();
   console.log(lastDayOfTheMonth);
+  console.log(firstDayOfTheMonth);
+  localStorage.setItem("firstDayOfTheMonth", firstDayOfTheMonth);
   localStorage.setItem("lastDayOfTheMonth", lastDayOfTheMonth);
 
-  var newOffset = firstDayOfTheMonth.getDay();
+  var newOffset = new Date(
+    currentYearNoMatterWhichOne,
+    monthWereIn - 1,
+    1
+  ).getDay();
+
   localStorage.setItem("newOffset", newOffset);
-  console.log(firstDayOfTheMonth);
   console.log(newOffset);
   var todaysDate = localStorage.getItem("todaysDate");
   var dayOnTheGrid = newOffset + todaysDate;
@@ -97,10 +91,8 @@ function initialPageLoad() {
 
   var monthsSinceChristBirth = y * 12 + 6;
   localStorage.setItem("monthsSinceChristBirth", monthsSinceChristBirth);
-  // y * 12 + month -1 = stuff    // -1 because months are 0-11
-  // take the month * 0, mod 12 and then add 1 to the remainder to get the month number
 
-  dateIntegerExtractor();
+  // dateIntegerExtractor();
   var weekDays = new Array("S", "M", "T", "W", "T", "F", "S");
   for (i = 0; i <= 6; i++) {
     document.getElementById("ans").innerHTML = weekDays
@@ -113,38 +105,49 @@ function initialPageLoad() {
   // var month = date.toLocaleString("default", { month: "long" });
   var selectedMonthName = localStorage.getItem("selectedMonthName");
   document.getElementById("selectedMonthName").innerHTML = selectedMonthName;
-  var lastDayOfTheMonth = localStorage.getItem("lastDayOfTheMonth");
-  calenderPopulator(m, lastDayOfTheMonth);
+  calenderPopulator();
 }
 
 ////
 
-function calenderPopulator(m, lastDayOfTheMonth) {
-  dateIntegerExtractor();
+function calenderPopulator() {
+  // dateIntegerExtractor();
   var newOffset = localStorage.getItem("newOffset");
+  console.log(newOffset);
   var monthWereIn = localStorage.getItem("monthWereIn");
   var dayOnTheGrid = localStorage.getItem("dayOnTheGrid");
+  var firstDayOfTheMonth = localStorage.getItem("firstDayOfTheMonth");
+  console.log(firstDayOfTheMonth);
+  var lastDayOfTheMonth = localStorage.getItem("lastDayOfTheMonth");
   var date = new Date();
   currentMonth = date.getMonth();
   console.log(currentMonth);
   var ids = new Array();
-  for (var i = 1; i <= 35; i++) {
+  for (var i = 1; i <= 42; i++) {
     ids.push(i);
   }
   document.getElementById("griddies").innerHTML = ids
     .map((id) =>
       id == dayOnTheGrid && monthWereIn == currentMonth
         ? `<div class="my-date" id=${
-            id - newOffset < 1 ? (id = null) : id - newOffset
+            id - newOffset < firstDayOfTheMonth ||
+            id - newOffset > lastDayOfTheMonth
+              ? (id = "")
+              : id - newOffset
           }>${
-            id - newOffset < 1 || id - newOffset > lastDayOfTheMonth
-              ? (id = null)
+            id - newOffset < firstDayOfTheMonth ||
+            id - newOffset > lastDayOfTheMonth
+              ? (id = "")
               : id - newOffset
           }</div>`
         : `<div class="grid-item" id=${
-            id - newOffset < 1 ? (id = null) : id - newOffset
+            id - newOffset < firstDayOfTheMonth ||
+            id - newOffset > lastDayOfTheMonth
+              ? (id = "")
+              : id - newOffset
           }>${
-            id - newOffset < 1 || id - newOffset > lastDayOfTheMonth
+            id - newOffset < firstDayOfTheMonth ||
+            id - newOffset > lastDayOfTheMonth
               ? (id = "")
               : id - newOffset
           }</div>`
@@ -159,8 +162,6 @@ window.onclick = (e) => {
     document;
     e.target.classList.toggle("selected-square");
   }
-
-  // console.log(e.target);
   // console.log(e.target.id, " -->", e.target.innerHTML);
 };
 

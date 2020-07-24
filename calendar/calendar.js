@@ -1,9 +1,9 @@
 function initialPageLoad() {
   console.log("initialPageLoad() has been called");
+  zeroYearCreator();
   dateExtractor();
   dayDisplay();
   calenderPopulator();
-  zeroYearCreator();
   headerPopulator();
 }
 
@@ -127,8 +127,9 @@ function zeroYearCreator() {
   var todaysDate = new Date();
   localStorage.setItem("todaysDate", todaysDate);
   y = todaysDate.getFullYear();
+  // The input from which all date calculations arise
   var monthsSinceYearZero = y * 12 + 6;
-  // Johannes Kepler's Rudolphine Tables (1627)
+  // Johannes Kepler's Rudolphine Tables, year zero (1627)
   localStorage.setItem("monthsSinceYearZero", monthsSinceYearZero);
 }
 
@@ -140,7 +141,7 @@ function headerPopulator() {
     "currentYearNoMatterWhichOne"
   );
   document.getElementById(
-    "selectedMonthName"
+    "headerMonthAndYear"
   ).innerHTML = `<div class="header-dates">${selectedMonthName}, ${currentYearNoMatterWhichOne}</div>`;
 }
 
@@ -186,10 +187,11 @@ function headerMonthCreator() {
 
   var selectedMonthName = months[monthWereIn - 1];
   console.log(selectedMonthName);
-  localStorage.setItem("monthWereIn", monthWereIn);
-  document.getElementById(
-    "selectedMonthName"
-  ).innerHTML = `<div class="header-dates">${selectedMonthName}, ${currentYearNoMatterWhichOne}</div>`;
+  var selectedMonthName = localStorage.setItem(
+    "selectedMonthName",
+    selectedMonthName
+  );
+  headerPopulator();
 }
 
 ////

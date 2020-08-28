@@ -3,7 +3,8 @@ function initialPageLoad() {
   zeroYearCreator();
   dateExtractor();
   dayDisplay();
-  calenderPopulator();
+  firstLastOffset();
+  // calenderPopulator();
   headerPopulator();
 }
 
@@ -18,18 +19,18 @@ function dateExtractor() {
 
 ////
 
-function calenderPopulator() {
+function calenderPopulator(newOffset, lastDayOfTheMonth, firstDayOfTheMonth) {
   console.log("calenderPopulator() has been called");
   var newOffset = localStorage.getItem("newOffset");
-  console.log("newOffset is " + newOffset);
+  // console.log("newOffset is " + newOffset);
   var monthWereIn = localStorage.getItem("monthWereIn");
-  console.log("monthWereIn is " + monthWereIn);
+  // console.log("monthWereIn is " + monthWereIn);
   var dayOnTheGrid = localStorage.getItem("dayOnTheGrid");
-  console.log("dayOnTheGrid is " + dayOnTheGrid);
+  // console.log("dayOnTheGrid is " + dayOnTheGrid);
   var firstDayOfTheMonth = localStorage.getItem("firstDayOfTheMonth");
-  console.log("firstDayOfTheMonth is " + firstDayOfTheMonth);
+  // console.log("firstDayOfTheMonth is " + firstDayOfTheMonth);
   var lastDayOfTheMonth = localStorage.getItem("lastDayOfTheMonth");
-  console.log("lastDayOfTheMonth is " + lastDayOfTheMonth);
+  // console.log("lastDayOfTheMonth is " + lastDayOfTheMonth);
   var date = new Date();
   currentMonth = date.getMonth();
   var ids = new Array();
@@ -140,6 +141,7 @@ function zeroYearCreator() {
   console.log("monthsSinceYearZero is " + monthsSinceYearZero);
   // Johannes Kepler's Rudolphine Tables, year zero (1627)
   localStorage.setItem("monthsSinceYearZero", monthsSinceYearZero);
+  dateExtractor(todaysDayNumber, todaysDate, monthsSinceYearZero);
 }
 
 ////
@@ -154,7 +156,7 @@ function headerPopulator() {
   ).innerHTML = `<div class="header-dates">${selectedMonthName}, ${currentYearNoMatterWhichOne}</div>`;
 }
 
-////
+///
 
 function currentMonthAndYear() {
   var monthsSinceYearZero = localStorage.getItem("monthsSinceYearZero");
@@ -235,4 +237,53 @@ function firstLastOffset() {
     1
   ).getDay();
   localStorage.setItem("newOffset", newOffset);
+  calenderPopulator(newOffset, lastDayOfTheMonth, firstDayOfTheMonth);
 }
+// REFACTOR GAMEPLAN
+
+// 1.zeroYearCreator();
+//      |_
+//        CREATED: todaysDate, todaysDayNumber, monthsSinceYearZero
+//        CALLS: dayDisplay()
+
+// 2. dateExtractor();
+//      |_
+//        CALLS:  currentMonthAndYear(), headerMonthCreator(), firstLastOffset();
+
+// 3. dayDisplay();
+
+// 4. firstLastOffset();
+//     |_
+//       GET: currentYearNoMatterWhichOne, monthsSinceYearZero, monthsSinceYearZero
+//       CREATED: firstDayOfTheMonth, lastDayOfTheMonth, newOffset
+
+// 5. headerPopulator();
+//     |_
+//       GET: currentYearNoMatterWhichOne, selectedMonthName
+
+// 6. currentMonthAndYear();
+//     |_
+//       GET: monthsSinceYearZero
+//       CREATED: monthWereIn, currentYearNoMatterWhichOne
+
+// 7. headerMonthCreator();
+//     |_
+//       GET: todaysDayNumber, newOffset, monthWereIn
+//       CREATED: dayOnTheGrid, selectedMonthName
+
+/* Function call order
+
+  todaysDate 
+  todaysDayNumber
+  monthsSinceYearZero
+  monthWereIn
+  currentYearNoMatterWhichOne
+  firstDayOfTheMonth
+  lastDayOfTheMonth 
+  newOffset
+  dayOnTheGrid
+  selectedMonthName 
+
+  headerPopulator()
+
+*/

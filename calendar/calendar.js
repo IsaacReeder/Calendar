@@ -1,5 +1,5 @@
 function initialPageLoad() {
-  console.log("initialPageLoad() has been called");
+  // console.log("initialPageLoad() has been called");
   zeroYearCreator();
   dateExtractor();
   dayDisplay();
@@ -10,7 +10,7 @@ function initialPageLoad() {
 ////
 
 function dateExtractor() {
-  console.log("dateExtractor() has been called");
+  // console.log("dateExtractor() has been called");
   currentMonthAndYear();
   headerMonthCreator();
   firstLastOffset();
@@ -19,12 +19,17 @@ function dateExtractor() {
 ////
 
 function calenderPopulator() {
-  console.log("calenderPopulator()has been called");
+  console.log("calenderPopulator() has been called");
   var newOffset = localStorage.getItem("newOffset");
+  console.log("newOffset is " + newOffset);
   var monthWereIn = localStorage.getItem("monthWereIn");
+  console.log("monthWereIn is " + monthWereIn);
   var dayOnTheGrid = localStorage.getItem("dayOnTheGrid");
+  console.log("dayOnTheGrid is " + dayOnTheGrid);
   var firstDayOfTheMonth = localStorage.getItem("firstDayOfTheMonth");
+  console.log("firstDayOfTheMonth is " + firstDayOfTheMonth);
   var lastDayOfTheMonth = localStorage.getItem("lastDayOfTheMonth");
+  console.log("lastDayOfTheMonth is " + lastDayOfTheMonth);
   var date = new Date();
   currentMonth = date.getMonth();
   var ids = new Array();
@@ -63,7 +68,7 @@ function calenderPopulator() {
 ////
 
 function monthIncrement() {
-  console.log("monthIncrement() has been called");
+  // console.log("monthIncrement() has been called");
   var monthsSinceYearZero = localStorage.getItem("monthsSinceYearZero") || 0;
   monthsSinceYearZero++;
   localStorage.setItem("monthsSinceYearZero", monthsSinceYearZero);
@@ -74,7 +79,7 @@ function monthIncrement() {
 ////
 
 function monthDecrement() {
-  console.log("monthDecrement() has been called");
+  // console.log("monthDecrement() has been called");
   var monthsSinceYearZero = localStorage.getItem("monthsSinceYearZero") || 0;
   monthsSinceYearZero--;
   localStorage.setItem("monthsSinceYearZero", monthsSinceYearZero);
@@ -125,10 +130,14 @@ function dayDisplay() {
 
 function zeroYearCreator() {
   var todaysDate = new Date();
+  var todaysDayNumber = todaysDate.getDay();
+  console.log(todaysDayNumber);
+  localStorage.setItem("todaysDayNumber", todaysDayNumber);
   localStorage.setItem("todaysDate", todaysDate);
   y = todaysDate.getFullYear();
   // The input from which all date calculations arise
   var monthsSinceYearZero = y * 12 + 6;
+  console.log("monthsSinceYearZero is " + monthsSinceYearZero);
   // Johannes Kepler's Rudolphine Tables, year zero (1627)
   localStorage.setItem("monthsSinceYearZero", monthsSinceYearZero);
 }
@@ -151,6 +160,7 @@ function currentMonthAndYear() {
   var monthsSinceYearZero = localStorage.getItem("monthsSinceYearZero");
   var currentYearNoMatterWhichOne = Math.floor(monthsSinceYearZero / 12);
   var monthWereIn = (monthsSinceYearZero % 12) + 1;
+  console.log("monthWereIn is " + monthWereIn);
   localStorage.setItem("monthWereIn", monthWereIn);
   localStorage.setItem(
     "currentYearNoMatterWhichOne",
@@ -161,14 +171,15 @@ function currentMonthAndYear() {
 ////
 
 function headerMonthCreator() {
-  var todaysDate = localStorage.getItem("todaysDate");
-  var newOffset = localStorage.setItem("newOffset", newOffset);
+  var todaysDayNumber = localStorage.getItem("todaysDayNumber");
+  var newOffset = localStorage.getItem("newOffset");
+  //just altered the above line of code.
   var monthWereIn = localStorage.getItem("monthWereIn");
-  var currentYearNoMatterWhichOne = localStorage.getItem(
-    "currentYearNoMatterWhichOne"
-  );
-
-  var dayOnTheGrid = newOffset + todaysDate;
+  // var currentYearNoMatterWhichOne = localStorage.getItem(
+  //   "currentYearNoMatterWhichOne"
+  // );
+  var dayOnTheGrid = newOffset + todaysDayNumber;
+  console.log("Day on the grid is: " + dayOnTheGrid);
   localStorage.setItem("dayOnTheGrid", dayOnTheGrid);
   var months = [
     "January",
@@ -186,7 +197,7 @@ function headerMonthCreator() {
   ];
 
   var selectedMonthName = months[monthWereIn - 1];
-  console.log(selectedMonthName);
+  // console.log(selectedMonthName);
   var selectedMonthName = localStorage.setItem(
     "selectedMonthName",
     selectedMonthName
@@ -215,7 +226,7 @@ function firstLastOffset() {
     (monthsSinceYearZero % 12) + 1,
     0
   ).getDate();
-  console.log(lastDayOfTheMonth);
+  // console.log(lastDayOfTheMonth);
   localStorage.setItem("lastDayOfTheMonth", lastDayOfTheMonth);
 
   var newOffset = new Date(

@@ -239,40 +239,40 @@ function firstLastOffset() {
   localStorage.setItem("newOffset", newOffset);
   calenderPopulator(newOffset, lastDayOfTheMonth, firstDayOfTheMonth);
 }
-// REFACTOR GAMEPLAN
+/* >>REFACTOR GAMEPLAN<<
 
-// 1.zeroYearCreator();
-//      |_
-//        CREATED: todaysDate, todaysDayNumber, monthsSinceYearZero
-//        CALLS: dayDisplay()
+ 1.zeroYearCreator();
+      |_
+        CREATED: todaysDate, todaysDayNumber, monthsSinceYearZero
+        CALLS: dayDisplay()
 
-// 2. dateExtractor();
-//      |_
-//        CALLS:  currentMonthAndYear(), headerMonthCreator(), firstLastOffset();
+ 2. dateExtractor();
+      |_
+        CALLS:  currentMonthAndYear(), headerMonthCreator(), firstLastOffset();
 
-// 3. dayDisplay();
+ 3. dayDisplay();
 
-// 4. firstLastOffset();
-//     |_
-//       GET: currentYearNoMatterWhichOne, monthsSinceYearZero, monthsSinceYearZero
-//       CREATED: firstDayOfTheMonth, lastDayOfTheMonth, newOffset
+ 4. firstLastOffset();
+     |_
+       GET: currentYearNoMatterWhichOne, monthsSinceYearZero, monthsSinceYearZero
+       CREATED: firstDayOfTheMonth, lastDayOfTheMonth, newOffset
 
-// 5. headerPopulator();
-//     |_
-//       GET: currentYearNoMatterWhichOne, selectedMonthName
+ 5. headerPopulator();
+     |_
+       GET: currentYearNoMatterWhichOne, selectedMonthName
 
-// 6. currentMonthAndYear();
-//     |_
-//       GET: monthsSinceYearZero
-//       CREATED: monthWereIn, currentYearNoMatterWhichOne
+ 6. currentMonthAndYear();
+     |_
+       GET: monthsSinceYearZero
+       CREATED: monthWereIn, currentYearNoMatterWhichOne
 
-// 7. headerMonthCreator();
-//     |_
-//       GET: todaysDayNumber, newOffset, monthWereIn
-//       CREATED: dayOnTheGrid, selectedMonthName
+ 7. headerMonthCreator();
+     |_
+       GET: todaysDayNumber, newOffset, monthWereIn
+       CREATED: dayOnTheGrid, selectedMonthName
 
-/* Function call order
-
+  >>ORDER IN WHICH FUNCTIONS ARE CALLED<<
+  
   todaysDate 
   todaysDayNumber
   monthsSinceYearZero

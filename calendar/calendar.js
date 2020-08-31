@@ -3,10 +3,12 @@ function initialPageLoad() {
   var todaysDate = new Date(),
     todaysDayNumber = todaysDate.getDate(),
     currentMonth = todaysDate.getMonth(),
+    monthVerifier = currentMonth,
     y = todaysDate.getFullYear(),
     monthsSinceYearZero = y * 12 + currentMonth;
   localStorage.setItem("monthsSinceYearZero", monthsSinceYearZero);
   localStorage.setItem("todaysDayNumber", todaysDayNumber);
+  localStorage.setItem("monthVerifier", monthVerifier);
 
   reload(monthsSinceYearZero, todaysDayNumber);
 }
@@ -15,6 +17,7 @@ function initialPageLoad() {
 
 function reload(monthsSinceYearZero, todaysDayNumber) {
   var currentYear = Math.floor(monthsSinceYearZero / 12),
+    monthVerifier = parseInt(localStorage.getItem("monthVerifier")) + 1,
     monthWereIn = (monthsSinceYearZero % 12) + 1,
     months = [
       "January",
@@ -30,7 +33,9 @@ function reload(monthsSinceYearZero, todaysDayNumber) {
       "November",
       "December",
     ];
-  const monthVerifier = monthWereIn;
+  console.log("monthWereIn is " + monthWereIn);
+  console.log("monthVerifier is " + monthVerifier);
+
   /////need to compare current month with month presented in griddies
 
   var selectedMonthName = months[monthWereIn - 1],

@@ -20,9 +20,10 @@
         <h1>Date and Time!</h1>
       </div>
     </div>
-  </body>
-  <!-- //Modal below// -->
-  <!-- <script>
+    <!-- </body> -->
+
+    <!-- //Modal below// -->
+    <!-- <script>
     var modal = document.querySelector(".modal");
     var trigger = document.querySelector(".trigger");
     var closeButton = document.querySelector(".close-button");
@@ -40,6 +41,39 @@
     closeButton.addEventListener("click", toggleModal);
     window.addEventListener("click", windowOnClick);
   </script> -->
+    <table>
+      <tr>
+        <td>
+          <form autocomplete="off" onsubmit="onFormSubmit()">
+            <div>
+              <label>New Event</label>
+              <input type="text" name="newEvent" id="newEvent" />
+            </div>
+            <div>
+              <label>Add Location</label>
+              <input type="text" name="newLocation" id="newLocation" />
+            </div>
+            <div>
+              <label>Time</label>
+              <input type="number" name="newTime" id="newTime" />
+            </div>
+          </form>
+        </td>
+      </tr>
+      <td>
+        <table class="" id="calendarEntry">
+          <thead>
+            <tr>
+              <th>New Event</th>
+              <th>Location</th>
+              <th>Time</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </td>
+    </table>
+  </body>
 </html>
 
 <!--     

@@ -138,3 +138,41 @@ document.onkeydown = function (e) {
       break;
   }
 };
+
+// Form logic below------------------------8 'D
+
+selectedRow = null;
+
+function onFormSubmit() {
+  if (formValidate()) {
+    var formData = readFormData();
+    if (selectedRow == null) insertNewRecord(formData);
+  }
+}
+
+////
+
+function formValidate() {
+  valid = true;
+  if (document.getElementById("newEvent").value == "") {
+    valid = false;
+  }
+  return valid;
+}
+
+////
+
+function readFormData() {
+  var formData = {};
+  formData["newEvent"] = document.getElementById("newEvent").value;
+  formData["newLocation"] = document.getElementById("newLocation").value;
+  formData["newTime"] = document.getElementById("newTime").value;
+  console.log(formData);
+  return formData;
+}
+
+////
+
+function insertNewRecord(formData) {
+  console.log(`insert new record has recieved ${formData}`);
+}

@@ -44,7 +44,10 @@
     <table>
       <tr>
         <td>
-          <form autocomplete="off" onsubmit="onFormSubmit()">
+          <form
+            autocomplete="off"
+            onsubmit="event.preventDefault();onFormSubmit()"
+          >
             <div>
               <label>New Event</label>
               <input type="text" name="newEvent" id="newEvent" />
@@ -56,6 +59,9 @@
             <div>
               <label>Time</label>
               <input type="number" name="newTime" id="newTime" />
+            </div>
+            <div class="form-action-buttons">
+              <input type="submit" value="Submit" />
             </div>
           </form>
         </td>
